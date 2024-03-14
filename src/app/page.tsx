@@ -1,8 +1,14 @@
+"use client";
+
 import Image from "next/image";
 import { IoSearch } from "react-icons/io5";
 import Navbar from "@/app/components/navbar";
+import { FormEvent } from "react";
 
 export default function Home() {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
   return (
     <div className="bg-gradient-to-b from-[#0F2167] via-blue-900 to-blue-700 min-h-full">
       <Navbar />
@@ -19,6 +25,7 @@ export default function Home() {
           <br></br>
           <div className="w-1/2">
             <form
+              onSubmit={handleSubmit}
               action=""
               className="flex justify-center items-center border-2 border-gray-500 w-full h-14 hover:bg-blue-950 rounded-lg"
             >
