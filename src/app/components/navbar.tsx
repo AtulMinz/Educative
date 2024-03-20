@@ -1,7 +1,6 @@
 "use client";
 
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 
 export default function Navbar() {
@@ -27,8 +26,7 @@ export default function Navbar() {
         className="gap-1 bg-blue-800 hover:bg-blue-900"
         onClick={() => {}}
       >
-        Signin
-        <ArrowRightIcon />
+        Signin &rarr;
       </Button>
     </NavigationMenu.Root>
   );

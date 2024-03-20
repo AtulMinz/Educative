@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { IoSearch } from "react-icons/io5";
 import Navbar from "@/app/components/navbar";
 import { FormEvent } from "react";
