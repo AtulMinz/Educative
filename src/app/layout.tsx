@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="">
+      <body className={fontSans.className}>
         <Provider>{children}</Provider>
       </body>
     </html>
