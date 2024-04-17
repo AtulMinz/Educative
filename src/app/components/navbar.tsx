@@ -40,14 +40,12 @@ export default function Navbar() {
         <>
           <Popover>
             <PopoverTrigger>
-              <Button variant="ghost">
-                <Avatar>
-                  <AvatarImage src={session.data?.user?.image || ""} />
-                  <AvatarFallback className="text-black">
-                    {session.data?.user?.name}
-                  </AvatarFallback>
-                </Avatar>
-              </Button>
+              <Avatar>
+                <AvatarImage src={session.data?.user?.image || ""} />
+                <AvatarFallback className="text-black">
+                  {session.data?.user?.name}
+                </AvatarFallback>
+              </Avatar>
             </PopoverTrigger>
             <PopoverContent className="bg-transparent border-none w-fit shadow-none p-0">
               <span>
