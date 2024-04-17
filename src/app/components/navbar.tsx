@@ -13,6 +13,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useEffect } from "react";
+import { cookies } from "next/headers";
 
 export default function Navbar() {
   const session = useSession();
