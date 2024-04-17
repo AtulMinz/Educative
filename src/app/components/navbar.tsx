@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
@@ -27,12 +28,14 @@ export default function Navbar() {
           </NavigationMenu.Link>
         </NavigationMenu.Item>
       </NavigationMenu.List>
-      {!session ? (
-        JSON.stringify(session.data?.user)
+      {session ? (
+        <span>
+          <img src={session.data?.user?.image || ""} alt="profile" />
+        </span>
       ) : (
         <Button
           className="gap-1 bg-blue-800 hover:bg-blue-900"
-          onClick={() => router.push("/signin")}
+          onClick={() => signIn()}
         >
           Signin &rarr;
         </Button>
