@@ -12,8 +12,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useEffect } from "react";
-import { cookies } from "next/headers";
 
 export default function Navbar() {
   const session = useSession();
@@ -37,7 +35,7 @@ export default function Navbar() {
           </NavigationMenu.Link>
         </NavigationMenu.Item>
       </NavigationMenu.List>
-      {session ? (
+      {session.data?.user ? (
         <>
           <Popover>
             <PopoverTrigger>

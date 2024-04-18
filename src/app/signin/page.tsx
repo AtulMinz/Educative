@@ -31,11 +31,21 @@ export default function Signin() {
           <span className="text-sm font-semibold text-neutral-500">Or</span>
           <div className="w-1/2 flex justify-center">
             <Button
-              onClick={() => signIn("google")}
+              onClick={() =>
+                signIn("google", {
+                  callbackUrl: "/",
+                })
+              }
               className="flex space-x-2 bg-[#ced4da] text-black w-1/2"
             >
               <span>
-                <Image src="google.svg" alt="signin" width={15} height={5} />
+                <Image
+                  src="https://e7.pngegg.com/pngimages/704/688/png-clipart-google-google-thumbnail.png"
+                  alt="signin"
+                  width={15}
+                  height={5}
+                  className="mix-blend-multiply"
+                />
               </span>
               <span>Signin</span>
             </Button>

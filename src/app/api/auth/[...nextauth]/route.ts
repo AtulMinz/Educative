@@ -2,7 +2,7 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
   providers: [
     GoogleProvider({
@@ -11,13 +11,27 @@ const authOptions: NextAuthOptions = {
     }),
     CredentialsProvider({
       credentials: {
-        username: { label: "Username", type: "text" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials: any) {
-        return {
-          id: "faith",
-        };
+        if (!credentials.email || !credentials.password) {
+          return null;
+        }
+
+        const user = await prisma?.user.findUnique({
+          where: {
+            email: String(credentials.email),
+          },
+        });
+        if (user) {
+          return {
+            id: user?.id,
+            email: user?.email,
+            name: user?.name,
+          };
+        }
+        return null;
       },
     }),
   ],
