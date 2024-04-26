@@ -1,6 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { permanentRedirect, redirect } from "next/navigation";
 
 export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
@@ -30,7 +31,22 @@ export const authOptions: NextAuthOptions = {
             email: user?.email,
             name: user?.name,
           };
+        } else {
+          const newUser = await prisma?.user.create({
+            data: {
+              email: credentials.email,
+              password: credentials.password,
+            },
+          });
+
+          if (newUser) {
+            return {
+              id: newUser?.id,
+              email: newUser?.email,
+            };
+          }
         }
+
         return null;
       },
     }),
