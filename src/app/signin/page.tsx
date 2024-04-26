@@ -24,7 +24,10 @@ export default function Signin() {
           >
             <Input type="email" placeholder="Email" />
             <Input type="password" placeholder="Password" />
-            <Button className="flex space-x-2 bg-[#ced4da] text-black w-1/2">
+            <Button
+              className="flex space-x-2 bg-[#ced4da] text-black w-1/2"
+              onClick={() => signIn("credentials", { callbackUrl: "/" })}
+            >
               Signin
             </Button>
           </form>
