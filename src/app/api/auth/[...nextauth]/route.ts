@@ -1,7 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { permanentRedirect, redirect } from "next/navigation";
+import db from "@/lib/client";
 
 export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
@@ -11,47 +11,47 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_SECRET!,
     }),
     CredentialsProvider({
+      name: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials: any) {
-        if (!credentials.email || !credentials.password) {
-          return null;
-        }
-
-        const user = await prisma?.user.findUnique({
+        const existingUser = await db.user.findFirst({
           where: {
-            email: String(credentials.email),
+            email: credentials.email,
           },
         });
-        if (user) {
-          return {
-            id: user?.id,
-            email: user?.email,
-            name: user?.name,
-          };
-        } else {
-          const newUser = await prisma?.user.create({
-            data: {
-              email: credentials.email,
-              password: credentials.password,
-            },
-          });
 
-          if (newUser) {
+        if (existingUser) {
+          const check = existingUser.password === credentials.password;
+          if (check) {
             return {
-              id: newUser?.id,
-              email: newUser?.email,
+              id: existingUser.id.toString(),
+              email: existingUser.email,
             };
           }
+          return null;
         }
-
         return null;
       },
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || "secret",
+  callbacks: {
+    jwt: async ({ user, token }: any) => {
+      if (user) {
+        token.uid = user.id;
+      }
+      return token;
+    },
+    session: ({ session, token, user }: any) => {
+      if (session.user) {
+        session.user.id = token.uid;
+      }
+      return session;
+    },
+  },
   pages: {
     signIn: "/signin",
   },

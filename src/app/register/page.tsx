@@ -3,18 +3,12 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { signIn } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
+import { createUser } from "../actions/createUser";
 
-export default function Signin() {
+export default function Register() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    signIn("credentials", { email, password, callbackUrl: "/" });
-  };
+  const [name, setName] = React.useState("");
 
   return (
     <main className="bg-[#e9ecef] min-h-screen flex justify-center items-center">
@@ -26,19 +20,29 @@ export default function Signin() {
             className="h-full rounded-l-lg"
           />
         </div>
-
         <div className="w-1/2 flex justify-center items-center flex-col gap-4">
           <form
             className="space-y-5 w-[50%] flex items-center flex-col"
-            onSubmit={(e) => handleSubmit(e)}
+            action={createUser}
           >
             <Input
+              placeholder="Your Name"
+              type="text"
+              name="name"
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+            />
+            <Input
               placeholder="Your Email"
+              type="email"
+              name="email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
             />
             <Input
               placeholder="Your Password"
+              type="password"
+              name="password"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
@@ -46,37 +50,9 @@ export default function Signin() {
               type="submit"
               className="flex space-x-2 bg-[#ced4da] text-black w-1/2"
             >
-              Signin
+              Register
             </Button>
           </form>
-          <span className="text-sm font-semibold text-neutral-500">Or</span>
-          <div className="w-1/2 flex justify-center">
-            <Button
-              onClick={() =>
-                signIn("google", {
-                  callbackUrl: "/",
-                })
-              }
-              className="flex space-x-2 bg-[#ced4da] text-black w-1/2"
-            >
-              <span>
-                <Image
-                  src="https://e7.pngegg.com/pngimages/704/688/png-clipart-google-google-thumbnail.png"
-                  alt="signin"
-                  width={15}
-                  height={5}
-                  className="mix-blend-multiply"
-                />
-              </span>
-              <span>Signin</span>
-            </Button>
-          </div>
-          <p className="text-sm">
-            Don&apos;t have an account?{" "}
-            <Link href={"/register"} className="text-blue-600">
-              Register
-            </Link>
-          </p>
         </div>
       </div>
     </main>
