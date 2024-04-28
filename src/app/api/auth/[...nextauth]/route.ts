@@ -2,6 +2,7 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import db from "@/lib/client";
+import { compare } from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
@@ -24,10 +25,13 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (existingUser) {
-          const check = existingUser.password === credentials.password;
-          if (check) {
+          const checkPassword = await compare(
+            credentials.password,
+            existingUser.password
+          );
+          if (checkPassword) {
             return {
-              id: existingUser.id.toString(),
+              id: existingUser.id,
               email: existingUser.email,
             };
           }
